@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using Iris.Graphics.Environment;
+using System.Reflection;
 
 namespace Iris.Graphics.RenderWindow;
 
@@ -11,6 +12,7 @@ public partial class IrsRenderWindow : UserControl
 	private readonly Int16 _contentsRectangleBorder = 50;
 
 	private Bitmap? _irisLogoBitmap = null;
+	private IrsGraphicEnvironment _grapgicEnvironment;
 
 	public IrsRenderWindow()
 	{
@@ -20,7 +22,6 @@ public partial class IrsRenderWindow : UserControl
 		base.SetStyle(ControlStyles.DoubleBuffer, false);
 		base.SetStyle(ControlStyles.ResizeRedraw, true);
 		base.SetStyle(ControlStyles.UserPaint, true);
-		base.DoubleBuffered = false; // TODO: Controllare se è necessario
 
 		// Caricamento delle risorse
 		Assembly irisAssembly = Assembly.GetExecutingAssembly();
@@ -29,6 +30,8 @@ public partial class IrsRenderWindow : UserControl
 			this._irisLogoBitmap = new Bitmap(irisLogoStream);
 
 		this.InitializeComponent();
+
+		this._grapgicEnvironment = new IrsGraphicEnvironment(this);
 	}
 
 	protected override void OnPaint(PaintEventArgs args)
@@ -36,7 +39,7 @@ public partial class IrsRenderWindow : UserControl
 		base.OnPaint(args);
 
 		// Disegno dello sfondo a design time
-		if (base.DesignMode || true)
+		if (base.DesignMode)
 			this.DrawControlBackground(args);
 	}
 
