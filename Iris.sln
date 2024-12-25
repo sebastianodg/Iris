@@ -1,11 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iris.Graphics", "Iris.Graphics\Iris.Graphics.csproj", "{CB3D16D1-B693-4D39-9DC5-4FA201900FC4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Iris.Graphics", "Test.Iris.Graphics\Test.Iris.Graphics.csproj", "{59FC29DE-19BE-4B5B-B37E-0DF38FAEA004}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iris.Base", "Iris.Base\Iris.Base.csproj", "{857EDCBD-7905-4BAF-A6CB-42E63609857C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iris.Documents", "Iris.Documents\Iris.Documents.csproj", "{45E80EC3-29AD-4C37-BC33-EBE3D838CA1A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iris.Graphics.Base", "Iris.Graphics.Base\Iris.Graphics.Base.csproj", "{CF7350BC-1212-4E92-B777-1ED10BABC4FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.ImageBuffers", "Test.ImageBuffers\Test.ImageBuffers.csproj", "{A3E9AF2A-CBAE-4EBA-930B-641B60760FBA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.ImageBuffers.Wpf", "Test.ImageBuffers.Wpf\Test.ImageBuffers.Wpf.csproj", "{E3BF4E41-BE6E-4BAA-9469-A13662683B24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +31,26 @@ Global
 		{59FC29DE-19BE-4B5B-B37E-0DF38FAEA004}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59FC29DE-19BE-4B5B-B37E-0DF38FAEA004}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59FC29DE-19BE-4B5B-B37E-0DF38FAEA004}.Release|Any CPU.Build.0 = Release|Any CPU
+		{857EDCBD-7905-4BAF-A6CB-42E63609857C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{857EDCBD-7905-4BAF-A6CB-42E63609857C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{857EDCBD-7905-4BAF-A6CB-42E63609857C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{857EDCBD-7905-4BAF-A6CB-42E63609857C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45E80EC3-29AD-4C37-BC33-EBE3D838CA1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45E80EC3-29AD-4C37-BC33-EBE3D838CA1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45E80EC3-29AD-4C37-BC33-EBE3D838CA1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45E80EC3-29AD-4C37-BC33-EBE3D838CA1A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7350BC-1212-4E92-B777-1ED10BABC4FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7350BC-1212-4E92-B777-1ED10BABC4FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7350BC-1212-4E92-B777-1ED10BABC4FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7350BC-1212-4E92-B777-1ED10BABC4FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3E9AF2A-CBAE-4EBA-930B-641B60760FBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3E9AF2A-CBAE-4EBA-930B-641B60760FBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3E9AF2A-CBAE-4EBA-930B-641B60760FBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3E9AF2A-CBAE-4EBA-930B-641B60760FBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3BF4E41-BE6E-4BAA-9469-A13662683B24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3BF4E41-BE6E-4BAA-9469-A13662683B24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3BF4E41-BE6E-4BAA-9469-A13662683B24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3BF4E41-BE6E-4BAA-9469-A13662683B24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
