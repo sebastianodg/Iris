@@ -2,6 +2,7 @@
 using Iris.Graphics.Types;
 using OpenGL;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Iris.Graphics.RenderWindow;
@@ -62,6 +63,7 @@ public partial class IrsRenderWindow : UserControl
 	[Description("Enable or disable vertical sync")]
 	[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 	public System.Boolean VerticalSync { get; set; } = true;
+
 	public IrsRenderWindow()
 	{
 		// Impostazione dello stile della finestra. Necessario per OpenGL
@@ -108,8 +110,8 @@ public partial class IrsRenderWindow : UserControl
 
 
 
-		//if (!base.DesignMode)
-		//	this._graphicEnvironment = new IrsGraphicEnvironment(this);
+		if (!base.DesignMode)
+			this._graphicEnvironment = new IrsGraphicEnvironment(this);
 	}
 
 	protected override void OnPaint(PaintEventArgs args)
@@ -185,6 +187,9 @@ public partial class IrsRenderWindow : UserControl
 		graphicEnvironmentInfo += $"Adapter: {Gl.CurrentVendor} - {Gl.CurrentRenderer}";
 		graphicEnvironmentInfo += $"\nOpenGL: {Gl.CurrentVersion.Major}.{Gl.CurrentVersion.Minor}.{Gl.CurrentVersion.Revision}";
 		graphicEnvironmentInfo += $" - Shading: {Gl.CurrentShadingVersion.Major}.{Gl.CurrentShadingVersion.Minor}.{Gl.CurrentShadingVersion.Revision}";
+
+		Gl.GetInteger<UInt32>(GetPName.AlphaBits, out UInt32 yyyy);
+		Trace.WriteLine($"AlphaBits: {yyyy}");
 
 		// Disegno delle informazioni sull'ambiente grafico
 		if (this._irisInfoFont != null && this._irisInfoBrush != null)
