@@ -1,10 +1,7 @@
 using Iris.Base.Abstractions;
-using Iris.Base.FrameRateCalculators;
 using Iris.Base.GraphicEnvironment;
-using Iris.Base.RenderThreads;
 using Iris.Base.Types;
 using OpenGL;
-using System.Diagnostics;
 
 namespace Test.OpenGL.SandBox;
 
@@ -18,28 +15,15 @@ public partial class MainForm : Form
 	{
 		this.InitializeComponent();
 
-		this._graphicsSettings = new()
-		{
-			WindowHandle = this._irisRenderWindow.Handle,
-			ColorBufferBits = IrisBufferBitsCount.Bits32,
-			DepthBufferBits = IrisBufferBitsCount.Bits24,
-			StencilBufferBits = IrisBufferBitsCount.Bits8,
-			AntiAliasingLevel = IrisAntiAliasingLevel.Off,
-			DoubleBuffer = true,
-			VerticalSync = true,
-			RGBAUnsigned = true,
-			RenderWindow = true,
-		};
-
-		try
-		{
-			this._gfxEnvironment = new IrisGfxEnvCreatorOpenGL(this._graphicsSettings);
-			this._gfxEnvironment.Create();
-		}
-		catch (Exception exc)
-		{
-			MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-		}
+		//try
+		//{
+		//	this._gfxEnvironment = new IrisGfxEnvCreatorOpenGL(this._graphicsSettings);
+		//	this._gfxEnvironment.Create();
+		//}
+		//catch (Exception exc)
+		//{
+		//	MessageBox.Show(exc.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		//}
 	}
 
 	protected override void OnLoad(EventArgs e)
@@ -60,7 +44,7 @@ public partial class MainForm : Form
 		//Trace.WriteLine($"VerticalSync: {this._gfxEnvironmentCaps.VerticalSync}");
 		//Trace.Unindent();
 
-		this._irisRenderWindow.OnRenderFrame += this.OnRenderFrame;
+		//this._irisRenderWindow.OnRenderFrame += this.OnRenderFrame;
 	}
 
 	private void OnRenderFrame(Object? sender, PaintEventArgs e)
