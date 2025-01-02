@@ -1,4 +1,6 @@
-﻿using Khronos;
+﻿using Iris.Base.Abstractions;
+using Iris.Base.FrameRateCalculators;
+using Khronos;
 using OpenGL;
 using System.Diagnostics;
 
@@ -8,12 +10,19 @@ internal class RenderControl : Panel
 {
 	private readonly Color _irisLogoBackgroundColor = Color.FromArgb(44, 44, 44);
 
+	private System.Boolean _rendering;
+	private IIrisFrameRateCalculator _frameRateCalculator;
+
 	private DeviceContext? _windowDeviceContext = null;
 	private String _currentVendor = String.Empty;
 	private String _currentRenderer = String.Empty;
 	private KhronosVersion? _openGLCurrentVersion = null;
 	private KhronosVersion? _openGLShadingVersion = null;
 	private IntPtr _renderContext = IntPtr.Zero;
+
+	public System.Boolean Rendering { get { return this._rendering; } }
+
+	System.Windows.Forms.Timer _timer;
 
 	public RenderControl()
 	{
@@ -23,6 +32,18 @@ internal class RenderControl : Panel
 		base.SetStyle(ControlStyles.DoubleBuffer, false);
 		base.SetStyle(ControlStyles.ResizeRedraw, true);
 		base.SetStyle(ControlStyles.UserPaint, true);
+
+		this._rendering = false;
+		this._frameRateCalculator = new IrisAverageFrameRateCalculator(10);
+
+		this._timer = new System.Windows.Forms.Timer();
+		this._timer.Interval = 1;
+		this._timer.Tick += this.OnTimerTick;
+	}
+
+	private void OnTimerTick(Object? sender, EventArgs e)
+	{
+		this.RenderTriangle();
 	}
 
 	protected override void OnHandleCreated(EventArgs e)
@@ -30,6 +51,25 @@ internal class RenderControl : Panel
 		base.OnHandleCreated(e);
 		if (!base.DesignMode)
 			this.CreateDeviceContext();
+
+		this._frameRateCalculator.StartWatching();
+		this._timer.Start();
+	}
+
+	protected override void OnHandleDestroyed(EventArgs e)
+	{
+		base.OnHandleDestroyed(e);
+
+		// Distruzione del render context e del device context della finestra
+		if (this._windowDeviceContext != null)
+		{
+			if (this._renderContext != IntPtr.Zero)
+				this._windowDeviceContext.DeleteContext(this._renderContext);
+			this._renderContext = IntPtr.Zero;
+
+			this._windowDeviceContext.DecRef();
+			this._windowDeviceContext = null;
+		}
 	}
 
 	protected override void OnPaint(PaintEventArgs args)
@@ -42,7 +82,12 @@ internal class RenderControl : Panel
 			return;
 		}
 
+		this._rendering = true;
 		this.RenderContents();
+		this._rendering = false;
+
+		this._frameRateCalculator.SignalFrameRendered();
+		Trace.WriteLine($"Frame time: {this._frameRateCalculator.GetFrameTimeMilliseconds().ToString("000.000")} - FPS: {this._frameRateCalculator.GetFramesPerSecond().ToString("00000.0")}");
 	}
 
 	public System.Boolean CreateDeviceContext()
@@ -97,11 +142,11 @@ internal class RenderControl : Panel
 		}
 		Trace.TraceInformation($"{nameof(RenderControl)}.{nameof(CreateDeviceContext)}: {matchingPixelFormats.Count} pixel formats were selected.");
 
+		if (Gl.PlatformExtensions.SwapControl)
+			this._windowDeviceContext.SwapInterval(0);
+
 		// Impostazione del primo pixel format per la finestra di output
 		this._windowDeviceContext.SetPixelFormat(matchingPixelFormats[0]);
-
-		if (Gl.PlatformExtensions.SwapControl)
-			this._windowDeviceContext.SwapInterval(true ? 1 : 0);
 
 		// Recupero delle informazioni sull'ambiente grafico
 		this._currentVendor = Gl.CurrentVendor;
@@ -145,6 +190,17 @@ internal class RenderControl : Panel
 			throw new Exception($"{nameof(RenderControl)}.{nameof(RenderContents)}: unable to set render context as current.");
 		}
 
+		this.RenderTriangle();
+	}
+
+	public void RenderTriangle()
+	{
+		Random rand = new Random((Int32)DateTime.Now.Ticks);
+
+		Single redComp = rand.NextSingle();
+		Single greenComp = rand.NextSingle();
+		Single blueComp = rand.NextSingle();
+
 		Gl.Viewport(0, 0, this.ClientSize.Width, this.ClientSize.Height);
 
 		Gl.ClearColor(0.239f, 0.239f, 0.239f, 1.000f);
@@ -152,9 +208,8 @@ internal class RenderControl : Panel
 
 		Gl.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 		Gl.Begin(PrimitiveType.Triangles);
-		Gl.Color3(1.000f, 0.627f, 0.157f);
+		Gl.Color3(redComp, greenComp, blueComp);
 		Gl.Vertex2(0.0f, 0.5f);
-		Gl.Color3(0.000f, 0.000f, 0.000f);
 		Gl.Vertex2(-0.5f, -0.5f);
 		Gl.Vertex2(+0.5f, -0.5f);
 		Gl.End();
@@ -163,13 +218,17 @@ internal class RenderControl : Panel
 		Gl.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Point);
 		Gl.PointSize(3.000f);
 		Gl.Begin(PrimitiveType.Points);
-		Gl.Color3(1.000f, 1.000f, 1.000f);
+		Gl.Color3(redComp, greenComp, blueComp);
 		Gl.Vertex2(0.0f, 0.5f);
-		Gl.Color3(0.000f, 0.000f, 0.000f);
 		Gl.Vertex2(-0.5f, -0.5f);
 		Gl.Vertex2(+0.5f, -0.5f);
 		Gl.End();
 
-		this._windowDeviceContext.SwapBuffers();
+		this._windowDeviceContext?.SwapBuffers();
+
+		this._frameRateCalculator.SignalFrameRendered();
+		//MainForm? mainForm = (MainForm?)this.Parent;
+		//if (mainForm != null)
+		//	mainForm.Text = $"Frame time: {this._frameRateCalculator.GetFrameTimeMilliseconds().ToString("000.000")} - FPS: {this._frameRateCalculator.GetFramesPerSecond().ToString("00000.0")}";
 	}
 }

@@ -19,4 +19,8 @@
     <EmbeddedResource Include="Resources\iris-logo.jpg" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Iris.Base\Iris.Base.csproj" />
+  </ItemGroup>
+
 </Project>

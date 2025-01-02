@@ -1,6 +1,7 @@
+using Iris.Base.Abstractions;
+using Iris.Base.FrameRateCalculators;
 using Iris.Graphics.Abstractions;
 using Iris.Graphics.Buffers;
-using Iris.Graphics.FrameRate;
 
 namespace Test.ImageBuffers;
 
@@ -63,7 +64,7 @@ public partial class MainForm : Form
 
 		this.ShowBufferContents(e.Graphics);
 		this._irisFrameRateCalculator.SignalFrameRendered();
-		this.Text = $"Test Buffers - Frame Time: {this._irisFrameRateCalculator.GetFrameTime().ToString("N3")} seconds - Frames per second: {this._irisFrameRateCalculator.GetFramesPerSecond().ToString("N1")}";
+		this.Text = $"Test Buffers - Frame Time: {this._irisFrameRateCalculator.GetFrameTimeMilliseconds().ToString("N3")} seconds - Frames per second: {this._irisFrameRateCalculator.GetFramesPerSecond().ToString("N1")}";
 	}
 
 	protected override void OnKeyDown(KeyEventArgs e)

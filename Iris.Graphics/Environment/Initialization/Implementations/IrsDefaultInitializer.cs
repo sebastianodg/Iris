@@ -11,7 +11,7 @@ namespace Iris.Graphics.Environment.Initialization.Implementations;
 /// </summary>
 public class IrsDefaultInitializer : IIrsEnvironmentInitializer
 {
-	private IrsRenderWindow? _renderWindow = null;
+	private IrisRenderWindow? _renderWindow = null;
 	private IrsEnvironmentConfig? _requestedConfig = null;
 
 	private DeviceContext? _renderWindowDeviceContext = null;
@@ -26,10 +26,10 @@ public class IrsDefaultInitializer : IIrsEnvironmentInitializer
 
 	private IrsEnvironmentConfig? _actualConfiguration = null;
 
-	public System.Boolean Initialize(IrsRenderWindow renderWindow, IrsEnvironmentConfig requestedConfig)
+	public System.Boolean Initialize(IrisRenderWindow renderWindow, IrsEnvironmentConfig requestedConfig)
 	{
 		if (renderWindow == null)
-			throw new Exception($"{nameof(IrsDefaultInitializer)}.{nameof(Initialize)}: Reference to {nameof(IrsRenderWindow)} control cannot be null.");
+			throw new Exception($"{nameof(IrsDefaultInitializer)}.{nameof(Initialize)}: Reference to {nameof(IrisRenderWindow)} control cannot be null.");
 		if (requestedConfig == null)
 			throw new Exception($"{nameof(IrsDefaultInitializer)}.{nameof(Initialize)}: Reference to {nameof(IrsEnvironmentConfig)} cannot be null.");
 

@@ -28,23 +28,34 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			_renderControl = new RenderControl();
+			_irisRenderWindow = new Iris.Graphics.RenderWindow.IrisRenderWindow();
+			renderControl1 = new RenderControl();
 			this.SuspendLayout();
 			// 
-			// _renderControl
+			// _irisRenderWindow
 			// 
-			_renderControl.Dock = DockStyle.Fill;
-			_renderControl.Location = new Point(0, 0);
-			_renderControl.Name = "_renderControl";
-			_renderControl.Size = new Size(1898, 1024);
-			_renderControl.TabIndex = 0;
+			_irisRenderWindow.BackColor = Color.FromArgb(44, 44, 44);
+			_irisRenderWindow.Dock = DockStyle.Right;
+			_irisRenderWindow.Location = new Point(930, 0);
+			_irisRenderWindow.Name = "_irisRenderWindow";
+			_irisRenderWindow.Size = new Size(968, 1024);
+			_irisRenderWindow.TabIndex = 0;
+			// 
+			// renderControl1
+			// 
+			renderControl1.Dock = DockStyle.Fill;
+			renderControl1.Location = new Point(0, 0);
+			renderControl1.Name = "renderControl1";
+			renderControl1.Size = new Size(930, 1024);
+			renderControl1.TabIndex = 1;
 			// 
 			// MainForm
 			// 
 			AutoScaleDimensions = new SizeF(10F, 25F);
 			AutoScaleMode = AutoScaleMode.Font;
 			ClientSize = new Size(1898, 1024);
-			Controls.Add(_renderControl);
+			Controls.Add(renderControl1);
+			Controls.Add(_irisRenderWindow);
 			Name = "MainForm";
 			StartPosition = FormStartPosition.CenterScreen;
 			Text = "OpenGL SandBox";
@@ -53,6 +64,7 @@
 
 		#endregion
 
-		private RenderControl _renderControl;
+		private Iris.Graphics.RenderWindow.IrisRenderWindow _irisRenderWindow;
+		private RenderControl renderControl1;
 	}
 }

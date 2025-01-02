@@ -30,7 +30,7 @@ namespace Test.Iris.Graphics
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this._irisRenderWindow = new IrsRenderWindow();
+			this._irisRenderWindow = new IrisRenderWindow();
 			this.SuspendLayout();
 			// 
 			// _irisRenderWindow
@@ -58,6 +58,6 @@ namespace Test.Iris.Graphics
 
 		#endregion
 
-		private IrsRenderWindow _irisRenderWindow;
+		private IrisRenderWindow _irisRenderWindow;
 	}
 }

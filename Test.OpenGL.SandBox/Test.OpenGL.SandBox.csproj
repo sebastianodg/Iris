@@ -12,4 +12,15 @@
     <PackageReference Include="OpenGL.Net" Version="0.8.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Iris.Base\Iris.Base.csproj" />
+    <ProjectReference Include="..\Iris.Graphics\Iris.Graphics.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="RenderControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

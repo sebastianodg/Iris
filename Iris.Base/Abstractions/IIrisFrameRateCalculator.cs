@@ -1,4 +1,4 @@
-﻿namespace Iris.Graphics.Abstractions
+﻿namespace Iris.Base.Abstractions
 {
 	public interface IIrisFrameRateCalculator
 	{
@@ -7,7 +7,7 @@
 		void SignalFrameRendered();
 		void StartWatching();
 		void StopWatching();
-		Single GetFrameTime();
+		Single GetFrameTimeMilliseconds();
 		Single GetFramesPerSecond();
 	}
 }

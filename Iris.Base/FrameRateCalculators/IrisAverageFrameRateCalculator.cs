@@ -1,16 +1,16 @@
-﻿using Iris.Graphics.Abstractions;
+﻿using Iris.Base.Abstractions;
 using System.Diagnostics;
 
-namespace Iris.Graphics.FrameRate;
+namespace Iris.Base.FrameRateCalculators;
 
 public class IrisAverageFrameRateCalculator : IIrisFrameRateCalculator
 {
 	private Stopwatch _framesStopWatch = new Stopwatch();
-	private Single _elapsedSeconds = 0.0f;
+	private Single _elapsedMilliseconds = 0.0f;
 	private Single _framesPerSecond = 0.0f;
 
 	private UInt16 _measurementCount;
-	private Single[]? _elapsedSecondsBuffer = null;
+	private Single[]? _elapsedMillisecondsBuffer = null;
 	private Single[]? _framesPerSecondBuffer = null;
 	private UInt16 _measurementIndex = 0;
 
@@ -25,11 +25,11 @@ public class IrisAverageFrameRateCalculator : IIrisFrameRateCalculator
 		this._measurementCount = measurementCount;
 
 		// Inizializzazione della classe
-		this._elapsedSecondsBuffer = new Single[this._measurementCount];
+		this._elapsedMillisecondsBuffer = new Single[this._measurementCount];
 		this._framesPerSecondBuffer = new Single[this._measurementCount];
 		for (UInt16 index = 0; index < this._measurementCount; index++)
 		{
-			this._elapsedSecondsBuffer[index] = 0.0f;
+			this._elapsedMillisecondsBuffer[index] = 0.0f;
 			this._framesPerSecondBuffer[index] = 0.0f;
 		}
 	}
@@ -39,35 +39,39 @@ public class IrisAverageFrameRateCalculator : IIrisFrameRateCalculator
 		return this._framesPerSecond;
 	}
 
-	public Single GetFrameTime()
+	public Single GetFrameTimeMilliseconds()
 	{
-		return this._elapsedSeconds;
+		return this._elapsedMilliseconds;
 	}
 
 	public void SignalFrameRendered()
 	{
 		if (!this._framesStopWatch.IsRunning)
-			throw new Exception($"{nameof(IrisDefaultFrameRateCalculator)}.{nameof(SignalFrameRendered)}: Stopwatch in not running");
-		if (this._elapsedSecondsBuffer == null || this._framesPerSecondBuffer == null)
+			throw new Exception($"{nameof(IrisAverageFrameRateCalculator)}.{nameof(SignalFrameRendered)}: Stopwatch is not running");
+		if (this._elapsedMillisecondsBuffer == null || this._framesPerSecondBuffer == null)
 			return;
 
-		this._elapsedSecondsBuffer[this._measurementIndex] = (Single)this._framesStopWatch.ElapsedMilliseconds / 1000.0f;
-		this._framesPerSecondBuffer[this._measurementIndex] = 1.0f / this._elapsedSeconds;
+		this._elapsedMillisecondsBuffer[this._measurementIndex] = (this._framesStopWatch.ElapsedTicks * 1000.0f) / (Single)Stopwatch.Frequency;
+		this._framesPerSecondBuffer[this._measurementIndex] = 1000.0f / this._elapsedMilliseconds;
+
+		Single elapsedMillisecondsSum = 0.0f;
+		for (UInt16 measurementIndex = 0; measurementIndex < this._measurementCount; measurementIndex++)
+			elapsedMillisecondsSum += this._elapsedMillisecondsBuffer[measurementIndex];
+		this._elapsedMilliseconds = elapsedMillisecondsSum / (Single)this._measurementCount;
+
+		if (this._elapsedMilliseconds != 0.0f)
+			this._framesPerSecond = 1000.0f / this._elapsedMilliseconds;
+		this._framesStopWatch.Restart();
 
 		this._measurementIndex++;
 		if (this._measurementIndex >= this._measurementCount)
 			this._measurementIndex = 0;
-
-		this._elapsedSeconds = (Single)(from s in this._elapsedSecondsBuffer select s).Sum() / (Single)this._measurementCount;
-		if (this._elapsedSeconds != 0.0f)
-			this._framesPerSecond = 1.0f / (Single)Math.Round(this._elapsedSeconds, 3);
-		this._framesStopWatch.Restart();
 	}
 
 	public void StartWatching()
 	{
 		this._framesStopWatch.Restart();
-		this._elapsedSeconds = 0.0f;
+		this._elapsedMilliseconds = 0;
 		this._framesPerSecond = 0.0f;
 	}
 

@@ -7,4 +7,8 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="OpenGL.Net" Version="0.8.4" />
+  </ItemGroup>
+
 </Project>

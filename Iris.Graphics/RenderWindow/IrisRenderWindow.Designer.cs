@@ -1,6 +1,6 @@
 ﻿namespace Iris.Graphics.RenderWindow
 {
-	partial class IrsRenderWindow
+	partial class IrisRenderWindow
 	{
 		/// <summary> 
 		/// Variabile di progettazione necessaria.

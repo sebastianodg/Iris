@@ -3,8 +3,13 @@
 /// <summary>
 /// Classe contenente le informazioni sulla configurazione dell'ambiente di OpenGL
 /// </summary>
-public class IrisGraphicSettings
+public class IrisGfxEnvironmentSettings
 {
+	/// <summary>
+	/// Restituisce o imposta l'handle della finestra da utilizzare come output del rendering
+	/// </summary>
+	public IntPtr WindowHandle { get; set; }
+
 	/// <summary>
 	/// Restituisce o imposta il numero di bit per il buffer del colore
 	/// </summary>
@@ -48,8 +53,9 @@ public class IrisGraphicSettings
 	/// <summary>
 	/// Costruttore
 	/// </summary>
-	public IrisGraphicSettings()
+	public IrisGfxEnvironmentSettings()
 	{
+		this.WindowHandle = IntPtr.Zero;
 		this.ColorBufferBits = IrisBufferBitsCount.Bits32;
 		this.DepthBufferBits = IrisBufferBitsCount.Bits24;
 		this.StencilBufferBits = IrisBufferBitsCount.Bits8;
