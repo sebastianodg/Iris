@@ -1,7 +1,10 @@
 ﻿using Iris.Base.Abstractions;
+using Iris.Base.Programs;
+using Iris.Base.Shaders;
 using Iris.Base.Types;
 using OpenGL;
 using System.Diagnostics;
+using System.Text;
 
 namespace Iris.Graphics.RenderWindow;
 
@@ -19,8 +22,6 @@ public partial class IrisRenderWindow : UserControl
 	private DevicePixelFormatCollection? _availablePixelFormats = null;
 	private List<DevicePixelFormat>? _matchingPixelFormats = null;
 	private IntPtr _openGLRenderContext = IntPtr.Zero;
-
-	public event EventHandler<PaintEventArgs>? OnRenderFrame = null;
 
 	public IrisRenderWindow()
 	{
@@ -74,7 +75,7 @@ public partial class IrisRenderWindow : UserControl
 			ColorBits = 32,
 			DepthBits = 24,
 			StencilBits = 8,
-			MultisampleBits = 8,
+			MultisampleBits = 16,
 			DoubleBuffer = true,
 		};
 
@@ -138,35 +139,83 @@ public partial class IrisRenderWindow : UserControl
 		if (this._openGLDeviceContext.MakeCurrent(this._openGLRenderContext) == false)
 			throw new Exception($"{nameof(IrisRenderWindow)}.{nameof(OnPaint)}: unable to set render context as current.");
 
-		Random rand = new Random((Int32)DateTime.Now.Ticks);
-
-		Single redComp = rand.NextSingle();
-		Single greenComp = rand.NextSingle();
-		Single blueComp = rand.NextSingle();
-
 		Gl.Viewport(0, 0, this.ClientSize.Width, this.ClientSize.Height);
 
 		Gl.ClearColor(0.239f, 0.239f, 0.239f, 1.000f);
 		Gl.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit | ClearBufferMask.StencilBufferBit);
 
-		Gl.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
-		Gl.Begin(PrimitiveType.Triangles);
-		Gl.Color3(redComp, greenComp, blueComp);
-		Gl.Vertex2(0.0f, 0.5f);
-		Gl.Vertex2(-0.5f, -0.5f);
-		Gl.Vertex2(+0.5f, -0.5f);
-		Gl.End();
+		/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+		Single[] verticesCoords =
+		{
+			-0.5f, -0.5f,
+			 0.0f,  0.5f,
+			 0.5f, -0.5f,
+		};
+		UInt32 vertexBufferId = Gl.GenBuffer();
+		Gl.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferId);
+		Gl.BufferData(BufferTarget.ArrayBuffer, (UInt32)(verticesCoords.Length * sizeof(Single)), verticesCoords, BufferUsage.StaticDraw);
+
+		Gl.VertexAttribPointer(0, 2, VertexAttribType.Float, true, 2 *  sizeof(Single), 0);
+		Gl.EnableVertexAttribArray(0);
+
+		StringBuilder vertexShaderSourceCode = new StringBuilder();
+		vertexShaderSourceCode.AppendLine("#version 330 core");
+		vertexShaderSourceCode.AppendLine("layout(location = 0) in vec4 position;");
+		vertexShaderSourceCode.AppendLine("void main()");
+		vertexShaderSourceCode.AppendLine("{");
+		vertexShaderSourceCode.AppendLine("gl_Position = position;");
+		vertexShaderSourceCode.AppendLine("}");
+
+		IIrisShader vertexShader = new IrisDefaultShader(ShaderType.VertexShader, vertexShaderSourceCode.ToString());
+		if (!vertexShader.Compile())
+			return;
+
+		StringBuilder fragmentShaderSourceCode = new StringBuilder();
+		fragmentShaderSourceCode.AppendLine("#version 330 core");
+		fragmentShaderSourceCode.AppendLine("layout(location = 0) out vec4 color;");
+		fragmentShaderSourceCode.AppendLine("void main()");
+		fragmentShaderSourceCode.AppendLine("{");
+		fragmentShaderSourceCode.AppendLine("color = vec4(1.0, 0.0, 0.0, 1.0);");
+		fragmentShaderSourceCode.AppendLine("}");
+
+		IIrisShader fragmentShader = new IrisDefaultShader(ShaderType.FragmentShader, fragmentShaderSourceCode.ToString());
+		if (!fragmentShader.Compile())
+			return;
+
+		IIrisShadersProgram shadersProgram = new IrisDefaultShadersProgram(vertexShader, fragmentShader);
+		shadersProgram.Create();
+		shadersProgram.Use();
+
+		Gl.DrawArrays(PrimitiveType.Triangles, 0, 3);
+		/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+		//Random rand = new Random((Int32)DateTime.Now.Ticks);
+
+		//Single redComp = rand.NextSingle();
+		//Single greenComp = rand.NextSingle();
+		//Single blueComp = rand.NextSingle();
 
 
-		Gl.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Point);
-		Gl.PointSize(3.000f);
-		Gl.Begin(PrimitiveType.Points);
-		Gl.Color3(redComp, greenComp, blueComp);
-		Gl.Vertex2(0.0f, 0.5f);
-		Gl.Vertex2(-0.5f, -0.5f);
-		Gl.Vertex2(+0.5f, -0.5f);
-		Gl.End();
+		//Gl.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+		//Gl.Begin(PrimitiveType.Triangles);
+		//Gl.Color3(redComp, greenComp, blueComp);
+		//Gl.Vertex2(0.0f, 0.5f);
+		//Gl.Vertex2(-0.5f, -0.5f);
+		//Gl.Vertex2(+0.5f, -0.5f);
+		//Gl.End();
+
+
+		//Gl.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Point);
+		//Gl.PointSize(3.000f);
+		//Gl.Begin(PrimitiveType.Points);
+		//Gl.Color3(redComp, greenComp, blueComp);
+		//Gl.Vertex2(0.0f, 0.5f);
+		//Gl.Vertex2(-0.5f, -0.5f);
+		//Gl.Vertex2(+0.5f, -0.5f);
+		//Gl.End();
 
 		this._openGLDeviceContext?.SwapBuffers();
+
+		shadersProgram.Delete();
 	}
 }
