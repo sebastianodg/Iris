@@ -147,16 +147,28 @@ public partial class IrisRenderWindow : UserControl
 		/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 		Single[] verticesCoords =
 		{
-			-0.5f, -0.5f,
-			 0.0f,  0.5f,
-			 0.5f, -0.5f,
+			-0.75f, -0.75f,
+			 0.75f, -0.75f,
+			 0.75f,  0.75f,
+			-0.75f,  0.75f,
 		};
+
 		UInt32 vertexBufferId = Gl.GenBuffer();
 		Gl.BindBuffer(BufferTarget.ArrayBuffer, vertexBufferId);
 		Gl.BufferData(BufferTarget.ArrayBuffer, (UInt32)(verticesCoords.Length * sizeof(Single)), verticesCoords, BufferUsage.StaticDraw);
 
 		Gl.VertexAttribPointer(0, 2, VertexAttribType.Float, true, 2 *  sizeof(Single), 0);
 		Gl.EnableVertexAttribArray(0);
+
+		UInt32[] vericesIndices =
+		{
+			0, 1, 2,
+			2, 3, 0,
+		};
+
+		UInt32 indexBufferId = Gl.GenBuffer();
+		Gl.BindBuffer(BufferTarget.ElementArrayBuffer, indexBufferId);
+		Gl.BufferData(BufferTarget.ElementArrayBuffer, (UInt32)(vericesIndices.Length * sizeof(UInt32)), vericesIndices, BufferUsage.StaticDraw);
 
 		StringBuilder vertexShaderSourceCode = new StringBuilder();
 		vertexShaderSourceCode.AppendLine("#version 330 core");
@@ -186,7 +198,7 @@ public partial class IrisRenderWindow : UserControl
 		shadersProgram.Create();
 		shadersProgram.Use();
 
-		Gl.DrawArrays(PrimitiveType.Triangles, 0, 3);
+		Gl.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, IntPtr.Zero);
 		/*-------------------------------------------------------------------------------------------------------------------------------------------------*/
 
 		//Random rand = new Random((Int32)DateTime.Now.Ticks);
