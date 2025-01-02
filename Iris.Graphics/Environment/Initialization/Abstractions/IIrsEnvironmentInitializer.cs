@@ -1,4 +1,4 @@
-﻿using Iris.Graphics.RenderWindow;
+﻿using Iris.Graphics.RenderControl;
 
 namespace Iris.Graphics.Environment.Initialization.Abstractions;
 
@@ -13,7 +13,7 @@ public interface IIrsEnvironmentInitializer
 	/// <param name="renderWindow">Riferimento alla finestra destinazione dell'output di OpenGL</param>
 	/// <param name="requestedConfig">Opzioni di configurazione dell'ambiente di OpenGL richieste</param>
 	/// <returns>Opzioni di configurazione effettivamente selezionate per l'ambiente di OpenGL</returns>
-	Boolean Initialize(IrisRenderWindow renderWindow, IrsEnvironmentConfig requestedConfig);
+	Boolean Initialize(IrisRenderControl renderWindow, IrsEnvironmentConfig requestedConfig);
 
 	/// <summary>
 	/// Restituisce la configurazione attuale, selezionata in fase di inizializzazione dell'ambiente grafico

@@ -1,9 +1,9 @@
 ﻿using OpenGL;
 using System.Reflection;
 
-namespace Iris.Graphics.RenderWindow;
+namespace Iris.Graphics.RenderControl;
 
-internal class IrisRenderWndLogoPainter
+internal class IrisRenderCtrlLogoPainter
 {
 	private readonly Color _irisLogoBackgroundColor = Color.FromArgb(44, 44, 44);
 	private readonly Int16 _contentsRectangleBorder = 50;
@@ -15,10 +15,10 @@ internal class IrisRenderWndLogoPainter
 
 	private Control _outputControl;
 
-	public IrisRenderWndLogoPainter(Control outputControl)
+	public IrisRenderCtrlLogoPainter(Control outputControl)
 	{
 		if (outputControl == null)
-			throw new Exception($"{nameof(IrisRenderWndLogoPainter)}.{nameof(IrisRenderWndLogoPainter)}: Output control cannot be null.");
+			throw new Exception($"{nameof(IrisRenderCtrlLogoPainter)}.{nameof(IrisRenderCtrlLogoPainter)}: Output control cannot be null.");
 
 		// Caricamento delle risorse
 		Assembly irisAssembly = Assembly.GetExecutingAssembly();

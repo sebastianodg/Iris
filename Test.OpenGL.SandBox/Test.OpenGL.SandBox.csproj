@@ -17,10 +17,4 @@
     <ProjectReference Include="..\Iris.Graphics\Iris.Graphics.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="RenderControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-  </ItemGroup>
-
 </Project>

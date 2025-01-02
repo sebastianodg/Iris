@@ -28,7 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			_irisRenderWindow = new Iris.Graphics.RenderWindow.IrisRenderWindow();
+			_irisRenderWindow = new Iris.Graphics.RenderControl.IrisRenderControl();
 			this.SuspendLayout();
 			// 
 			// _irisRenderWindow
@@ -54,6 +54,6 @@
 
 		#endregion
 
-		private Iris.Graphics.RenderWindow.IrisRenderWindow _irisRenderWindow;
+		private Iris.Graphics.RenderControl.IrisRenderControl _irisRenderWindow;
 	}
 }

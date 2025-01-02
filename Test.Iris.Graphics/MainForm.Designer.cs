@@ -1,4 +1,4 @@
-﻿using Iris.Graphics.RenderWindow;
+﻿using Iris.Graphics.RenderControl;
 
 namespace Test.Iris.Graphics
 {
@@ -30,7 +30,7 @@ namespace Test.Iris.Graphics
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this._irisRenderWindow = new IrisRenderWindow();
+			this._irisRenderWindow = new IrisRenderControl();
 			this.SuspendLayout();
 			// 
 			// _irisRenderWindow
@@ -58,6 +58,6 @@ namespace Test.Iris.Graphics
 
 		#endregion
 
-		private IrisRenderWindow _irisRenderWindow;
+		private IrisRenderControl _irisRenderWindow;
 	}
 }
